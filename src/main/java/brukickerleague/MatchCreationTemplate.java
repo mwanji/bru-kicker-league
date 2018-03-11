@@ -6,8 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static brukickerleague.Bootstrap.formGroup;
-import static brukickerleague.Bootstrap.submit;
+import static brukickerleague.Bootstrap.*;
 import static j2html.TagCreator.*;
 
 public class MatchCreationTemplate {
@@ -29,8 +28,8 @@ public class MatchCreationTemplate {
             form(
                 formGroup(
                     label("Player 1").attr("for", "team1[player1]"),
-                        input(attrs("#team1[player1]")).withName("team1[player1]").withClasses("form-control", iff(errors.containsKey("team1Player1"), "is-invalid")).isRequired(),
-                        iff(errors.containsKey("team1Player1"), div(attrs(".invalid-feedback"), errors.get("team1Player1")))
+                  input(attrs("#team1[player1]")).withName("team1[player1]").withClasses("form-control", ifInvalidInput("team1Player1", errors)),
+                  ifInvalidHelpText("team1Player1", errors)
                 ),
                 formGroup(
                     label("Player 2").attr("for", "team1[player2]"),
@@ -39,8 +38,8 @@ public class MatchCreationTemplate {
                 h2("Team 2"),
                 formGroup(
                     label("Player 1").attr("for", "team2[player1]"),
-                        input(attrs("#team2[player1]")).withName("team2[player1]").withClasses("form-control", iff(errors.containsKey("team2Player1"), "is-invalid")).isRequired(),
-                        iff(errors.containsKey("team2Player1"), div(attrs(".invalid-feedback"), errors.get("team2Player1")))
+                  input(attrs("#team2[player1]")).withName("team2[player1]").withClasses("form-control", ifInvalidInput("team2Player1", errors)),
+                  ifInvalidHelpText("team2Player1", errors)
                 ),
                 formGroup(
                     label("Player 2").attr("for", "team2[player2]"),
