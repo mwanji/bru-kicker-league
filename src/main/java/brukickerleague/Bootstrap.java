@@ -19,7 +19,11 @@ class Bootstrap {
   }
 
   static DomContent submit() {
-    return button(attrs(".btn.btn-primary"), "Submit").withType("submit");
+    return submit("Submit");
+  }
+
+  static DomContent submit(String text) {
+    return button(attrs(".btn.btn-primary"), text).withType("submit");
   }
 
   static String ifInvalidInput(String key, Map<String, String> errors) {

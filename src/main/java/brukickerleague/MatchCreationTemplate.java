@@ -28,7 +28,7 @@ public class MatchCreationTemplate {
       form(
         formGroup(
           label("Player 1").attr("for", "team1[player1]"),
-          input(attrs("#team1[player1]")).withName("team1[player1]").withClasses("form-control", ifInvalidInput("team1Player1", errors)),
+          input(attrs("#team1[player1]")).withName("team1[player1]").withClasses("form-control", ifInvalidInput("team1Player1", errors)).isRequired(),
           ifInvalidHelpText("team1Player1", errors)
         ),
         formGroup(
@@ -38,7 +38,7 @@ public class MatchCreationTemplate {
         h2("Team 2"),
         formGroup(
           label("Player 1").attr("for", "team2[player1]"),
-          input(attrs("#team2[player1]")).withName("team2[player1]").withClasses("form-control", ifInvalidInput("team2Player1", errors)),
+          input(attrs("#team2[player1]")).withName("team2[player1]").withClasses("form-control", ifInvalidInput("team2Player1", errors)).isRequired(),
           ifInvalidHelpText("team2Player1", errors)
         ),
         formGroup(
