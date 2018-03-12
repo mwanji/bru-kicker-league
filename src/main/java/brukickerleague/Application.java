@@ -21,24 +21,31 @@ public class Application {
 
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
+    Db db = initDb();
+    //runDbMigrations();
+
+    deploymentPort().ifPresent(Spark::port);
+
+    MatchController matchController = new MatchController(validator, db);
+    get("/match", (req, res) -> new MatchCreationTemplate().render());
+    post("/match", matchController::createMatch);
+    get("/match/:altId", matchController::showMatch);
+    post("/match/:altId/goal/:teamId", matchController::addGoal);
+  }
+
+  private static Db initDb() {
     HashMap<String, String> persistenceProperties = new HashMap<>();
     persistenceProperties.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
     persistenceProperties.put("javax.persistence.jdbc.url", databaseUrl());
     persistenceProperties.put("javax.persistence.schema-generation.database.action", "drop-and-create");
     persistenceProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
     persistenceProperties.put("javax.persistence.provider", "org.hibernate.jpa.HibernatePersistenceProvider");
+    persistenceProperties.put("hibernate.hikari.connectionTimeout", "20000");
+    persistenceProperties.put("hibernate.hikari.minimumIdle", "1");
+    persistenceProperties.put("hibernate.hikari.maximumPoolSize", "20");
+    persistenceProperties.put("hibernate.hikari.idleTimeout", "300000");
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("bruKickerLeague", persistenceProperties);
-    Db db = new Db(entityManagerFactory);
-    //runDbMigrations();
-
-
-    deploymentPort().ifPresent(Spark::port);
-
-    MatchesController matchesController = new MatchesController(validator, db);
-    get("/match", (req, res) -> new MatchCreationTemplate().render());
-    post("/match", matchesController::createMatch);
-    get("/match/:altId", matchesController::showMatch);
-    post("/match/:altId/goal/:teamId", matchesController::addGoal);
+    return new Db(entityManagerFactory);
   }
 
   private static OptionalInt deploymentPort() {
@@ -56,6 +63,5 @@ public class Application {
     Flyway flyway = new Flyway();
     flyway.setDataSource(databaseUrl(), environment.get("JDBC_DATABASE_USERNAME"), environment.get("JDBC_DATABASE_PASSWORD"));
     flyway.migrate();
-
   }
 }

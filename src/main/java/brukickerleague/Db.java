@@ -15,35 +15,12 @@ class Db {
   private final EntityManagerFactory emf;
 
   public <T> T save(T entity) {
-    EntityManager em = emf.createEntityManager();
-    EntityTransaction tx = em.getTransaction();
-    try {
-      tx.begin();
-      T mergedEntity = new Tx(em).save(entity);
-      tx.commit();
-      return mergedEntity;
-    } finally {
-      em.close();
-    }
+    return inTx(tx -> tx.save(entity));
   }
 
   @SuppressWarnings("unchecked")
   public <T> Optional<T> by(Class<T> entityClass, String property, Object value) {
-    EntityManager em = emf.createEntityManager();
-    EntityTransaction tx = em.getTransaction();
-    try {
-      tx.begin();
-      Query query = em.createQuery("from " + entityClass.getSimpleName() + " where " + property + "= :value");
-      query.setParameter("value", value);
-      Optional<T> entity = new Tx(em).by(entityClass, property, value);
-      tx.commit();
-      return entity;
-    } catch (Exception e) {
-      tx.rollback();
-      return Optional.empty();
-    } finally {
-      em.close();
-    }
+    return inTx(tx -> tx.by(entityClass, property, value));
   }
 
   public <T> T inTx(Function<Tx, T> worker) {

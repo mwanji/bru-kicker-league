@@ -9,7 +9,7 @@ import javax.validation.Validator;
 import java.util.Set;
 
 @AllArgsConstructor
-public class MatchesController {
+public class MatchController {
 
   private final Validator validator;
   private final Db db;
