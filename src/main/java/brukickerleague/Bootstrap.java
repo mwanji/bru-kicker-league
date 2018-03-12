@@ -18,11 +18,11 @@ class Bootstrap {
     return div(attrs(".form-group"), _contents);
   }
 
-  static DomContent submit() {
+  static ContainerTag submit() {
     return submit("Submit");
   }
 
-  static DomContent submit(String text) {
+  static ContainerTag submit(String text) {
     return button(attrs(".btn.btn-primary"), text).withType("submit");
   }
 

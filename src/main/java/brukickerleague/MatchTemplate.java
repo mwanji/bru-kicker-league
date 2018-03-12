@@ -17,24 +17,22 @@ public class MatchTemplate {
     return new Page("Now Playing",
       h1("Now Playing"),
       form(attrs(".form-inline"),
-        label(attrs(".w-50"), match.getTeam1Player1()),
+        label(attrs(".w-75"), match.getTeam1FullName()),
         iffElse(match.hasEnded(),
           span(team1Score),
-          button(attrs(".btn.btn-light.w-25"), team1Score).withType("submit")
+          button(attrs(".btn.btn-light.w-25.btn-lg"), team1Score).withType("submit")
         )
       ).withMethod("post").withAction(baseUrl + "/goal/1"),
-      iff(match.team1HasPlayer2(), div(attrs(".mt-3.w-50.text-center"), match.getTeam1Player2())),
       form(attrs(".form-inline.mt-3"),
-        label(attrs(".w-50"), match.getTeam2Player1()),
+        label(attrs(".w-75"), match.getTeam2FullName()),
         iffElse(match.hasEnded(),
           span(team2Score),
-          button(attrs(".btn.btn-dark.w-25"), team2Score).withType("submit")
+          button(attrs(".btn.btn-dark.w-25.btn-lg"), team2Score).withType("submit")
         )
       ).withMethod("post").withAction(baseUrl + "/goal/2"),
-      iff(match.team2HasPlayer2(), div(attrs(".mt-3.w-50.text-center"), match.getTeam2Player2())),
       iff(!match.hasEnded(),
         form(attrs(".form-inline.mt-3"),
-          Bootstrap.submit("Finished")
+          button(attrs(".btn.btn-primary.w-100.btn-lg"), "Finished")
         ).withMethod("post").withAction(baseUrl + "/end")
       )
     ).render();

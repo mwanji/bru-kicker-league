@@ -16,9 +16,6 @@ import static lombok.AccessLevel.*;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@NamedQueries({
-  @NamedQuery(name = "Match.byAltId", query = "from Match m where m.altId = :altId")
-})
 @Entity
 class Match {
 
@@ -82,5 +79,13 @@ class Match {
 
   public boolean team2HasPlayer2() {
     return team2Player2 != null && !team2Player2.trim().isEmpty();
+  }
+
+  public String getTeam1FullName() {
+    return team1Player1 + (team1Player2 != null && !team1Player2.isEmpty() ? " / " + team1Player2 : "");
+  }
+
+  public String getTeam2FullName() {
+    return team2Player1 + (team2Player2 != null && !team2Player2.isEmpty() ? " / " + team2Player2 : "");
   }
 }

@@ -2,10 +2,8 @@ package brukickerleague;
 
 import lombok.AllArgsConstructor;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -62,6 +60,13 @@ class Db {
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
+    }
+
+    public <T> List<T> all(Class<T> entityClass, String orderBy) {
+      TypedQuery<T> query = em.createQuery("from " + entityClass.getSimpleName() + " order by :orderBy DESC", entityClass);
+      query.setParameter("orderBy", orderBy);
+
+      return query.getResultList();
     }
   }
 }

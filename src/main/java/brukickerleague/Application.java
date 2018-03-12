@@ -29,6 +29,8 @@ public class Application {
     deploymentPort().ifPresent(Spark::port);
 
     initMatchController(validator, db);
+    StandingsController standingsController = new StandingsController(db);
+    get("/", standingsController::getStandings);
   }
 
   private static void initMatchController(Validator validator, Db db) {
