@@ -23,7 +23,8 @@ import static lombok.AccessLevel.*;
 class Match {
 
   @Id
-  @GeneratedValue
+  @SequenceGenerator(name = "match_id_seq", sequenceName = "match_id_seq")
+  @GeneratedValue(generator = "match_id_seq")
   private Long id;
 
   @NotBlank
