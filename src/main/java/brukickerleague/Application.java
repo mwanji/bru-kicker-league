@@ -46,7 +46,6 @@ public class Application {
     HashMap<String, Object> persistenceProperties = new HashMap<>();
     persistenceProperties.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
     persistenceProperties.put("javax.persistence.jdbc.url", databaseUrl());
-    persistenceProperties.put("javax.persistence.schema-generation.database.action", "drop-and-create");
     persistenceProperties.put("javax.persistence.provider", "org.hibernate.jpa.HibernatePersistenceProvider");
     persistenceProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
     persistenceProperties.put("hibernate.connection.url", databaseUrl());
