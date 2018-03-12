@@ -33,7 +33,7 @@ class Match {
   @NotNull
   @Column(updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
   private final ZonedDateTime createdAt = ZonedDateTime.now();
-  @Column(updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+  @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
   private ZonedDateTime endedAt;
 
   @NotBlank
