@@ -14,7 +14,17 @@ public class StandingsTemplate {
   public String render() {
     return new Page("Standings",
       h1("Standings"),
-      each(matches, match -> div(attrs(".mb-3"), match.getTeam1FullName() + " " + match.getTeam1Score() + " - " + match.getTeam2FullName() + " " + match.getTeam2Score()))
+      each(matches, match -> div(attrs(".mb-3"),
+        a(attrs(".btn.btn-dark"),
+          span(match.getTeam1FullName()),
+          span(attrs(".badge.badge-light"), Integer.toString(match.getTeam1Score()))
+        ).withHref("/match/" + match.getAltId()),
+        span(" - "),
+        a(attrs(".btn.btn-light"),
+          span(match.getTeam2FullName()),
+          span(attrs(".badge.badge-dark"), Integer.toString(match.getTeam2Score()))
+        ).withHref("/match/" + match.getAltId())
+      ))
     ).render();
   }
 }
