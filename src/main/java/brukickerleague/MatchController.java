@@ -46,4 +46,17 @@ public class MatchController {
     res.redirect("/match/" + match1.getAltId());
     return null;
   }
+
+  public Object endMatch(Request req, Response res) {
+    Match match1 = db.inTx(tx -> {
+      Match match = tx.by(Match.class, "altId", req.params("altId"))
+        .orElseThrow(() -> new IllegalArgumentException("No match found"));
+      match.end();
+      tx.save(match);
+      return match;
+    });
+
+    res.redirect("/match/" + match1.getAltId());
+    return null;
+  }
 }

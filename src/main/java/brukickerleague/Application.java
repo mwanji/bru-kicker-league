@@ -1,6 +1,7 @@
 package brukickerleague;
 
 import org.flywaydb.core.Flyway;
+import org.hibernate.cfg.Environment;
 import spark.Spark;
 
 import javax.persistence.EntityManagerFactory;
@@ -16,34 +17,45 @@ import static spark.Spark.*;
 public class Application {
 
   private static Map<String, String> environment;
+
   public static void main(String[] args) {
     environment = new ProcessBuilder().environment();
 
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     Db db = initDb();
-    //runDbMigrations();
+    runDbMigrations();
 
     deploymentPort().ifPresent(Spark::port);
 
+    initMatchController(validator, db);
+  }
+
+  private static void initMatchController(Validator validator, Db db) {
     MatchController matchController = new MatchController(validator, db);
-    get("/match", (req, res) -> new MatchCreationTemplate().render());
-    post("/match", matchController::createMatch);
-    get("/match/:altId", matchController::showMatch);
-    post("/match/:altId/goal/:teamId", matchController::addGoal);
+    path("/match", () -> {
+      get("/", (req, res) -> new MatchCreationTemplate().render());
+      post("/", matchController::createMatch);
+      get("/:altId", matchController::showMatch);
+      post("/:altId/goal/:teamId", matchController::addGoal);
+      post("/:altId/end", matchController::endMatch);
+    });
   }
 
   private static Db initDb() {
-    HashMap<String, String> persistenceProperties = new HashMap<>();
+    HashMap<String, Object> persistenceProperties = new HashMap<>();
     persistenceProperties.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
     persistenceProperties.put("javax.persistence.jdbc.url", databaseUrl());
     persistenceProperties.put("javax.persistence.schema-generation.database.action", "drop-and-create");
-    persistenceProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
     persistenceProperties.put("javax.persistence.provider", "org.hibernate.jpa.HibernatePersistenceProvider");
+    persistenceProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
+    persistenceProperties.put("hibernate.connection.url", databaseUrl());
     persistenceProperties.put("hibernate.hikari.connectionTimeout", "20000");
     persistenceProperties.put("hibernate.hikari.minimumIdle", "1");
     persistenceProperties.put("hibernate.hikari.maximumPoolSize", "20");
     persistenceProperties.put("hibernate.hikari.idleTimeout", "300000");
+    persistenceProperties.put(Environment.SHOW_SQL, true);
+    persistenceProperties.put(Environment.FORMAT_SQL, true);
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("bruKickerLeague", persistenceProperties);
     return new Db(entityManagerFactory);
   }

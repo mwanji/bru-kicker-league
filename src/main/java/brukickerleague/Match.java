@@ -3,6 +3,7 @@ package brukickerleague;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -26,17 +27,23 @@ class Match {
   private Long id;
 
   @NotBlank
-  @Column(updatable = false)
+  @Column(updatable = false, unique = true)
   private final String altId = UUID.randomUUID().toString();
   @NotNull
-  @Column(updatable = false)
+  @Column(updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
   private final ZonedDateTime createdAt = ZonedDateTime.now();
+  @Column(updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+  private ZonedDateTime endedAt;
 
   @NotBlank
+  @Length(max = 50)
   private String team1Player1;
+  @Length(max = 50)
   private String team1Player2;
   @NotBlank
+  @Length(max = 50)
   private String team2Player1;
+  @Length(max = 50)
   private String team2Player2;
   @Setter
   @Min(0)
@@ -58,5 +65,21 @@ class Match {
     } else if ("2".equals(teamId)) {
       team2Score++;
     }
+  }
+
+  public void end() {
+    endedAt = ZonedDateTime.now();
+  }
+
+  public boolean hasEnded() {
+    return endedAt != null;
+  }
+
+  public boolean team1HasPlayer2() {
+    return team1Player2 != null && !team1Player2.trim().isEmpty();
+  }
+
+  public boolean team2HasPlayer2() {
+    return team2Player2 != null && !team2Player2.trim().isEmpty();
   }
 }
