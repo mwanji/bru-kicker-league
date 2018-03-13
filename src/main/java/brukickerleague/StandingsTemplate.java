@@ -13,13 +13,14 @@ public class StandingsTemplate {
 
   public String render() {
     return new Page("Standings",
-      h1("Standings"),
+      h1(attrs(".display-1.mb-4"), "Standings"),
       each(matches, match -> div(attrs(".mb-3"),
-        a(attrs(".btn.btn-dark.mr-4"),
+        a(attrs(".btn.btn-dark.w-50"),
+          iff(!match.hasEnded(), span(attrs(".badge.badge-danger.mr-3"), "LIVE")),
           span(match.getTeam1FullName()),
           span(attrs(".badge.badge-light.ml-2"), Integer.toString(match.getTeam1Score()))
         ).withHref("/match/" + match.getAltId()),
-        a(attrs(".btn.btn-light"),
+        a(attrs(".btn.btn-light.w-50"),
           span(match.getTeam2FullName()),
           span(attrs(".badge.badge-dark.ml-2"), Integer.toString(match.getTeam2Score()))
         ).withHref("/match/" + match.getAltId())
