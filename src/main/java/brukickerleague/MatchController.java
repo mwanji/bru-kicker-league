@@ -6,7 +6,10 @@ import spark.Response;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.Map;
 import java.util.Set;
+
+import static java.util.stream.Collectors.*;
 
 @AllArgsConstructor
 public class MatchController {
@@ -17,10 +20,10 @@ public class MatchController {
   public String showMatch(Request req, Response response) {
     return db.by(Match.class, "altId", req.params("altId"))
       .map(match -> new MatchTemplate(match).render())
-      .orElseThrow(() -> new IllegalArgumentException("No match found"));
+      .orElseThrow(() -> new IllegalArgumentException("Match not found"));
   }
 
-  public Object createMatch(Request req, Response res) {
+  public String createMatch(Request req, Response res) {
     Match match = new Match(req.queryMap("team1").value("player1"), req.queryMap("team1").value("player2"), req.queryMap("team2").value("player1"), req.queryMap("team2").value("player2"));
 
     Set<ConstraintViolation<Match>> constraintViolations = validator.validate(match);
@@ -30,7 +33,8 @@ public class MatchController {
       res.redirect("/match/" + match.getAltId());
       return null;
     } else {
-      return new MatchCreationTemplate(constraintViolations).render();
+      Map<String, String> errors = constraintViolations.stream().collect(toMap(cv -> cv.getPropertyPath().toString(), ConstraintViolation::getMessage));
+      return new MatchCreationTemplate(errors).render();
     }
   }
 

@@ -1,10 +1,7 @@
 package brukickerleague;
 
-import javax.validation.ConstraintViolation;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static brukickerleague.Bootstrap.*;
 import static j2html.TagCreator.*;
@@ -14,16 +11,17 @@ public class MatchCreationTemplate {
   private final Map<String, String> errors;
 
   MatchCreationTemplate() {
-    this(Collections.emptySet());
+    this(Collections.emptyMap());
   }
 
-  MatchCreationTemplate(Set<ConstraintViolation<Match>> constraintViolations) {
-    this.errors = constraintViolations.stream().collect(Collectors.toMap(cv -> cv.getPropertyPath().toString(), ConstraintViolation::getMessage));
+  MatchCreationTemplate(Map<String, String> errors) {
+    this.errors = errors;
   }
 
   public String render() {
     return new Page("New Match",
       h1("New Match"),
+      iff(errors.containsKey("duplicatePlayer"), div(attrs("#duplicatePlayer.alert.alert-danger"), errors.get("duplicatePlayer")).attr("role", "alert")),
       h2("Team 1"),
       form(
         formGroup(
