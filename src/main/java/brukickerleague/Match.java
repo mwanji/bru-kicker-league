@@ -17,6 +17,7 @@ import static lombok.AccessLevel.*;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
+@ValidMatch
 class Match {
 
   @Id
