@@ -18,6 +18,7 @@ public class StandingsTemplate {
       div(attrs(".mb-3"),
         a(attrs(".btn.btn-primary"), "New Match").withHref("/match/")
       ),
+      /*
       each(liveMatches, match -> div(attrs(".mb-3"),
         div(attrs(".btn-group.w-100"),
           a(attrs(".btn.btn-dark.w-50"),
@@ -31,6 +32,7 @@ public class StandingsTemplate {
           ).withHref("/match/" + match.getAltId())
         )
       )),
+      */
       table(attrs(".table"),
         thead(
           tr(
