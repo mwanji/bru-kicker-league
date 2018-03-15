@@ -18,7 +18,7 @@ import static lombok.AccessLevel.*;
 @NoArgsConstructor(access = PROTECTED)
 @Entity
 @NamedQueries({
-  @NamedQuery(name = "Match.betweenDates", query = "from Match m where m.createdAt >= :start and m.createdAt <= :end")
+  @NamedQuery(name = "Match.betweenDates", query = "from Match m where m.createdAt >= ?1 and m.createdAt <= ?2")
 })
 @ValidMatch
 class Match {
