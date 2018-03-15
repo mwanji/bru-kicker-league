@@ -20,10 +20,10 @@ public class MatchCreationTemplate {
 
   public String render() {
     return new Page("New Match",
-      h1("New Match"),
+      h1(attrs(".display-3"), "New Match"),
       iff(errors.containsKey("duplicatePlayer"), div(attrs("#duplicatePlayer.alert.alert-danger"), errors.get("duplicatePlayer")).attr("role", "alert")),
-      h2("Team 1"),
       form(
+        h2(attrs(".bg-dark.text-white.p-4"), "Black Team"),
         formGroup(
           label("Player 1").attr("for", "team1[player1]"),
           input(attrs("#team1[player1]")).withName("team1[player1]").withClasses("form-control", ifInvalidInput("team1Player1", errors)).isRequired().attr("maxlength", 50),
@@ -33,7 +33,7 @@ public class MatchCreationTemplate {
           label("Player 2").attr("for", "team1[player2]"),
           input(attrs("#team1[player2].form-control")).withName("team1[player2]").attr("maxlength", 50)
         ),
-        h2("Team 2"),
+        h2(attrs(".bg-light.p-4"), "White Team"),
         formGroup(
           label("Player 1").attr("for", "team2[player1]"),
           input(attrs("#team2[player1]")).withName("team2[player1]").withClasses("form-control", ifInvalidInput("team2Player1", errors)).isRequired().attr("maxlength", 50),
