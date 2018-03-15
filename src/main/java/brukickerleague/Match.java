@@ -19,7 +19,7 @@ import static lombok.AccessLevel.*;
 @Entity
 @NamedQueries({
   @NamedQuery(name = "Match.betweenDates", query = "from Match m where m.createdAt >= ?1 and m.createdAt <= ?2"),
-  @NamedQuery(name = "Match.ended", query = "from Match m where m.endedAt is not null")
+  @NamedQuery(name = "Match.ended", query = "from Match m where m.endedAt is not null order by createdAt desc")
 })
 @ValidMatch
 class Match {
