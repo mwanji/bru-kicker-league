@@ -18,11 +18,10 @@ public class StandingsTemplate {
       div(attrs(".mb-3"),
         a(attrs(".btn.btn-primary"), "New Match").withHref("/match/")
       ),
-      /*
       each(liveMatches, match -> div(attrs(".mb-3"),
         div(attrs(".btn-group.w-100"),
           a(attrs(".btn.btn-dark.w-50"),
-            iff(!match.hasEnded(), span(attrs(".badge.badge-danger.mr-3"), "LIVE")),
+            span(attrs(".badge.badge-danger.mr-3"), "LIVE"),
             span(match.getTeam1FullName()),
             span(attrs(".badge.badge-light.ml-2"), Integer.toString(match.getTeam1Score()))
           ).withHref("/match/" + match.getAltId()),
@@ -32,7 +31,6 @@ public class StandingsTemplate {
           ).withHref("/match/" + match.getAltId())
         )
       )),
-      */
       table(attrs(".table"),
         thead(
           tr(
