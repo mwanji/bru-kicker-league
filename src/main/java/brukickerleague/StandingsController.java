@@ -12,7 +12,7 @@ public class StandingsController {
   private final Db db;
 
   public Object getStandings(Request req, Response res) {
-    List<Match> liveMatches = db.inTx(tx -> tx.all(Match.class, "createdAt").stream().filter(match -> !match.isEnded());
+    List<Match> liveMatches = db.inTx(tx -> tx.all(Match.class, "createdAt").stream().filter(match -> !match.hasEnded());
 //    List<Match> fortnightlyMatches = db.inTx(tx -> tx.query(Match.class, "Match.betweenDates", ZonedDateTime.now().minusDays(14), ZonedDateTime.now()));
     List<Match> fortnightlyMatches = db.inTx(tx -> tx.all(Match.class, "createdBy"));
     Standings standings = new Standings(fortnightlyMatches);
