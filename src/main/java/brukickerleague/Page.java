@@ -23,9 +23,14 @@ public class Page {
         title(title + " - Bru Kicker League")
       ),
       body(
-        nav(attrs(".navbar.navbar-dark.bg-primary"),
+        nav(attrs(".navbar.navbar-expand.navbar-dark.bg-primary"),
           div(attrs(".container"),
-            a(attrs(".navbar-brand"), "Bru Kicker League").withHref("/")
+            a(attrs(".navbar-brand.pl-3"), "Bru Kicker League").withHref("/"),
+            div(attrs(".collapse.navbar-collapse"),
+              div(attrs(".navbar-nav"),
+                a(attrs("nav-item.nav-link"), "Start Match").withHref("/match/")
+              )
+            )
           )
         ),
         div(attrs(".container"), contents)

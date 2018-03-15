@@ -15,9 +15,6 @@ public class StandingsTemplate {
   public String render() {
     return new Page("Standings",
       h1(attrs(".display-3.mb-4"), "Standings"),
-      div(attrs(".mb-3"),
-        a(attrs(".btn.btn-primary"), "New Match").withHref("/match/")
-      ),
       each(liveMatches, match -> div(attrs(".mb-3"),
         div(attrs(".btn-group.w-100"),
           a(attrs(".btn.btn-dark.w-50"),
