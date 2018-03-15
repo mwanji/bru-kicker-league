@@ -17,6 +17,9 @@ import static lombok.AccessLevel.*;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
+@NamedQueries({
+  @NamedQuery(name = "Match.betweenDates", query = "from Match m where m.createdAt >= :start and m.createdAt <= :end")
+})
 @ValidMatch
 class Match {
 
@@ -88,5 +91,9 @@ class Match {
 
   public String getTeam2FullName() {
     return team2Player1 + (team2Player2 != null && !team2Player2.isEmpty() ? " / " + team2Player2 : "");
+  }
+
+  public boolean isTeam1Winner() {
+    return hasEnded() && team1Score > team2Score;
   }
 }

@@ -9,7 +9,8 @@ import static j2html.TagCreator.*;
 @AllArgsConstructor
 public class StandingsTemplate {
 
-  private final List<Match> matches;
+  private final List<Match> liveMatches;
+  private final Standings standings;
 
   public String render() {
     return new Page("Standings",
@@ -17,7 +18,7 @@ public class StandingsTemplate {
       div(attrs(".mb-3"),
         a(attrs(".btn.btn-primary"), "New Match").withHref("/match/")
       ),
-      each(matches, match -> div(attrs(".mb-3"),
+      each(liveMatches, match -> div(attrs(".mb-3"),
         div(attrs(".btn-group.w-100"),
           a(attrs(".btn.btn-dark.w-50"),
             iff(!match.hasEnded(), span(attrs(".badge.badge-danger.mr-3"), "LIVE")),
@@ -29,7 +30,24 @@ public class StandingsTemplate {
             span(attrs(".badge.badge-dark.ml-2"), Integer.toString(match.getTeam2Score()))
           ).withHref("/match/" + match.getAltId())
         )
-      ))
+      )),
+      table(attrs(".table"),
+        thead(
+          tr(
+            th(),
+            th("Wins"),
+            th("Losses")
+          )
+        ),
+        each(standings.list(), standing ->
+          tr(
+            td(standing.getName()),
+            td(Integer.toString(standing.getWins())),
+            td(Integer.toString(standing.getLosses()))
+          )
+        )
+
+      )
     ).render();
   }
 }

@@ -16,6 +16,10 @@ class Db {
     return inTx(tx -> tx.save(entity));
   }
 
+  public <T> List<T> all(Class<T> entityClass, String property, Object value, String orderBy) {
+    return inTx(tx -> tx.all(entityClass, property, value, orderBy));
+  }
+
   @SuppressWarnings("unchecked")
   public <T> Optional<T> by(Class<T> entityClass, String property, Object value) {
     return inTx(tx -> tx.by(entityClass, property, value));
@@ -62,10 +66,18 @@ class Db {
       }
     }
 
-    public <T> List<T> all(Class<T> entityClass, String orderBy) {
-      TypedQuery<T> query = em.createQuery("from " + entityClass.getSimpleName() + " order by :orderBy DESC", entityClass);
+    public <T> List<T> all(Class<T> entityClass, String property, Object value, String orderBy) {
+      TypedQuery<T> query = em.createQuery("from " + entityClass.getSimpleName() + " where " + property + "= :value order by :orderBy DESC", entityClass);
       query.setParameter("orderBy", orderBy);
 
+      return query.getResultList();
+    }
+
+    public <T> List<T> query(Class<T> entityClass, String queryName, Object... parameters) {
+      TypedQuery<T> query = em.createNamedQuery(queryName, entityClass);
+      for (int i = 0; i < parameters.length; i++) {
+        query.setParameter(i, parameters[i]);
+      }
       return query.getResultList();
     }
   }
