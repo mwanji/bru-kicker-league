@@ -22,7 +22,7 @@ public class Page {
         link().withRel("stylesheet").withHref("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css").attr("integrity", "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm").attr("crossorigin", "anonymous"),
         title(title + " - Bru Kicker League")
       ),
-      body(
+      body(attrs(".pb-2"),
         nav(attrs(".navbar.navbar-expand.navbar-dark.bg-primary"),
           div(attrs(".container"),
             a(attrs(".navbar-brand.pl-3"), "Bru Kicker League").withHref("/"),
