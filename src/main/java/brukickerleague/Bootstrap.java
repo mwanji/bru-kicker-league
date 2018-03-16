@@ -33,4 +33,9 @@ class Bootstrap {
   static DomContent ifInvalidHelpText(String key, Map<String, String> errors) {
     return iff(errors.containsKey(key), div(attrs(".invalid-feedback"), errors.get(key)));
   }
+  
+  static ContainerTag icon(String name) {
+    // <span class="oi oi-icon-name" title="icon name" aria-hidden="true"></span>
+    return span(attrs(".oi.oi-" + name));
+  }
 }
