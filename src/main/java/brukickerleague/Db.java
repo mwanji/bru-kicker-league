@@ -3,6 +3,7 @@ package brukickerleague;
 import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -84,9 +85,10 @@ class Db {
     public <T> List<T> query(Class<T> entityClass, String queryName, Object... parameters) {
       TypedQuery<T> query = em.createNamedQuery(queryName, entityClass);
       for (int i = 0; i < parameters.length; i++) {
-        query.setParameter(i, parameters[i]);
+        query.setParameter(i + 1, parameters[i]);
       }
-      return query.getResultList();
+      List<T> resultList = query.getResultList();
+      return resultList != null ? resultList : Collections.emptyList();
     }
   }
 }

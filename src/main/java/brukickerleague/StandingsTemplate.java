@@ -1,5 +1,6 @@
 package brukickerleague;
 
+import j2html.tags.DomContent;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -38,13 +39,16 @@ public class StandingsTemplate {
         ),
         each(standings.list(), standing ->
           tr(
-            td(standing.getName()),
+            td(playerLink(standing.getName())),
             td(Integer.toString(standing.getWins())),
             td(Integer.toString(standing.getLosses()))
           )
         )
-
       )
     ).render();
+  }
+
+  private DomContent playerLink(String name) {
+    return a(name).withHref("/player/" + name);
   }
 }

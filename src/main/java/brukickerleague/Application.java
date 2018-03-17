@@ -31,6 +31,9 @@ public class Application {
     initMatchController(validator, db);
     StandingsController standingsController = new StandingsController(db);
     get("/", standingsController::getStandings);
+
+    PlayerController playerController = new PlayerController(db);
+    get("/player/:name", playerController::getPlayer);
   }
 
   private static void initMatchController(Validator validator, Db db) {
