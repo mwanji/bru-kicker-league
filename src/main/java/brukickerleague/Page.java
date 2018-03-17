@@ -2,6 +2,7 @@ package brukickerleague;
 
 import j2html.tags.DomContent;
 
+import static brukickerleague.Bootstrap.*;
 import static j2html.TagCreator.*;
 
 public class Page {
@@ -29,7 +30,7 @@ public class Page {
             a(attrs(".navbar-brand.pl-3"), "Bru Kicker League").withHref("/"),
             div(attrs(".collapse.navbar-collapse"),
               div(attrs(".navbar-nav"),
-                a(attrs("nav-item.nav-link"), "Start Match").withHref("/match/")
+                a(attrs("btn.btn-outline-light"), icon("plus"), text(" Start Match")).withHref("/match/")
               )
             )
           )

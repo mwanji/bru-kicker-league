@@ -35,7 +35,6 @@ class Bootstrap {
   }
   
   static ContainerTag icon(String name) {
-    // <span class="oi oi-icon-name" title="icon name" aria-hidden="true"></span>
-    return span(attrs(".oi.oi-" + name));
+    return span(attrs(".oi.oi-" + name)).withTitle(name).attr("aria-hidden", true);
   }
 }
