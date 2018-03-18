@@ -48,6 +48,10 @@ public class Standings {
     return standings;
   }
 
+  public Optional<String> getTopPlayer() {
+    return standings.isEmpty() ? Optional.empty() : Optional.of(standings.get(0).name);
+  }
+
   @Getter
   @ToString
   public static class Standing {

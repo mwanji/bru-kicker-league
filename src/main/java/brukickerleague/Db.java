@@ -26,6 +26,10 @@ class Db {
     return inTx(tx -> tx.by(entityClass, property, value));
   }
 
+  public <T> List<T> query(Class<T> entityClass, String queryName, Object... values) {
+    return inTx(tx -> tx.query(entityClass, queryName, values));
+  }
+
   public <T> T inTx(Function<Tx, T> worker) {
     EntityManager em = emf.createEntityManager();
     EntityTransaction tx = em.getTransaction();
@@ -43,7 +47,7 @@ class Db {
   }
 
   @AllArgsConstructor
-  class Tx {
+  static class Tx {
 
     private final EntityManager em;
 

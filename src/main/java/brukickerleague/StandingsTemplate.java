@@ -4,6 +4,7 @@ import j2html.tags.DomContent;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 import static j2html.TagCreator.*;
 
@@ -12,6 +13,7 @@ public class StandingsTemplate {
 
   private final List<Match> liveMatches;
   private final Standings standings;
+  private final Optional<Award> award;
 
   public String render() {
     return new Page("Standings",
@@ -49,6 +51,9 @@ public class StandingsTemplate {
   }
 
   private DomContent playerLink(String name) {
-    return a(name).withHref("/player/" + name);
+    Boolean hasAward = award.map(a -> a.getPlayerName().equals(name)).orElse(Boolean.FALSE);
+    return a(
+      iffElse(hasAward, join(Bootstrap.icon("star").withTitle("Player of the Week"), " " + name), text(name))
+    ).withHref("/player/" + name);
   }
 }
