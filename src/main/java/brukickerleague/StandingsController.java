@@ -19,18 +19,19 @@ public class StandingsController {
   public Object getStandings(Request req, Response res) {
     List<Match> liveMatches = db.query(Match.class, "Match.notEnded");
     ZonedDateTime.now().with(WeekFields.ISO.getFirstDayOfWeek());
-    List<Match> fortnightlyMatches = db.query(Match.class, "Match.betweenDates", ZonedDateTime.now().with(WeekFields.ISO.getFirstDayOfWeek()).with(LocalTime.MIN), ZonedDateTime.now());
-    Standings standings = new Standings(fortnightlyMatches);
+    List<Match> thisWeekMatches = db.query(Match.class, "Match.betweenDates", ZonedDateTime.now().with(WeekFields.ISO.getFirstDayOfWeek()).with(LocalTime.MIN), ZonedDateTime.now());
+    Standings thisWeekStandings = new Standings(thisWeekMatches);
+    ZonedDateTime startOfLastWeek = ZonedDateTime.now().minusDays(7).with(WeekFields.ISO.getFirstDayOfWeek()).with(LocalTime.MIN);
+    Standings lastWeekStandings = new Standings(db.query(Match.class, "Match.betweenDates", startOfLastWeek, startOfLastWeek.plusDays(6)));
 
     LocalDate startOfAwardWeek = LocalDate.now().minusDays(7).with(WeekFields.ISO.getFirstDayOfWeek());
     List<Award> awards = db.query(Award.class, "Award.typeForPeriod", Award.Type.PLAYER_OF_THE_WEEK, startOfAwardWeek);
     Award award;
     if (awards.isEmpty()) {
-      ZonedDateTime startDate = ZonedDateTime.now().minusDays(7).with(WeekFields.ISO.getFirstDayOfWeek()).with(LocalTime.MIN);
-      Standings awardStandings = new Standings(db.query(Match.class, "Match.betweenDates", startDate, startDate.plusDays(6)));
+      Standings awardStandings = new Standings(db.query(Match.class, "Match.betweenDates", startOfLastWeek, startOfLastWeek.plusDays(6)));
       Optional<String> name = awardStandings.getTopPlayer();
       if (name.isPresent()) {
-        award = db.save(new Award(Award.Type.PLAYER_OF_THE_WEEK, name.get(), startDate.toLocalDate(), startDate.toLocalDate().plusDays(6)));
+        award = db.save(new Award(Award.Type.PLAYER_OF_THE_WEEK, name.get(), startOfLastWeek.toLocalDate(), startOfLastWeek.toLocalDate().plusDays(6)));
       } else {
         award = null;
       }
@@ -38,6 +39,6 @@ public class StandingsController {
       award = awards.get(0);
     }
 
-    return new StandingsTemplate(liveMatches, standings, Optional.ofNullable(award)).render();
+    return new StandingsTemplate(liveMatches, Optional.ofNullable(award), thisWeekStandings, lastWeekStandings).render();
   }
 }
