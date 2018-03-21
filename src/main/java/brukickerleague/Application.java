@@ -39,7 +39,7 @@ public class Application {
   private static void initMatchController(Validator validator, Db db) {
     MatchController matchController = new MatchController(validator, db);
     path("/match", () -> {
-      get("/", (req, res) -> new MatchCreationTemplate().render());
+      get("/", matchController::createMatchForm);
       post("/", matchController::createMatch);
       get("/:altId", matchController::showMatch);
       post("/:altId/goal/:teamId", matchController::addGoal);

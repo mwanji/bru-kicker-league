@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @AllArgsConstructor
@@ -28,6 +29,10 @@ class Db {
 
   public <T> List<T> query(Class<T> entityClass, String queryName, Object... values) {
     return inTx(tx -> tx.query(entityClass, queryName, values));
+  }
+
+  public <T> T raw(BiFunction<Tx, EntityManager, T> worker) {
+    return inTx(tx -> worker.apply(tx, tx.em));
   }
 
   public <T> T inTx(Function<Tx, T> worker) {
