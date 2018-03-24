@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 @Getter
@@ -28,8 +29,8 @@ import static lombok.AccessLevel.*;
 class Match {
 
   @Id
-  @SequenceGenerator(name = "match_id_seq", sequenceName = "match_id_seq")
-  @GeneratedValue(generator = "match_id_seq")
+  @SequenceGenerator(name = "match_id_seq", sequenceName = "match_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = SEQUENCE, generator = "match_id_seq")
   private Long id;
 
   @NotBlank

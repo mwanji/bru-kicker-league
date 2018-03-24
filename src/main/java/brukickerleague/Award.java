@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 import static javax.persistence.EnumType.*;
+import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 @Entity
@@ -22,8 +23,8 @@ public class Award {
   }
 
   @Id
-  @SequenceGenerator(name = "award_id_seq", sequenceName = "award_id_seq")
-  @GeneratedValue(generator = "award_id_seq")
+  @SequenceGenerator(name = "award_id_seq", sequenceName = "award_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = SEQUENCE, generator = "award_id_seq")
   private Long id;
   @Enumerated(STRING)
   @Column(updatable = false)
