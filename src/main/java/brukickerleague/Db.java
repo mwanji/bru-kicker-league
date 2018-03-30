@@ -1,8 +1,11 @@
 package brukickerleague;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +14,8 @@ import java.util.function.Function;
 
 @AllArgsConstructor
 class Db {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Db.class);
 
   private final EntityManagerFactory emf;
 
@@ -62,6 +67,7 @@ class Db {
 
     @SuppressWarnings("unchecked")
     public <T> Optional<T> by(Class<T> entityClass, String property, Object value) {
+      LOGGER.info("by: " + entityClass.getSimpleName() + "#" + property + " = " + value);
       Query query = em.createQuery("from " + entityClass.getSimpleName() + " where " + property + "= :value");
       query.setParameter("value", value);
       try {
@@ -73,6 +79,7 @@ class Db {
     }
 
     public <T> T save(T entity) {
+      LOGGER.info("save: " + entity.getClass().getSimpleName());
       try {
         return em.merge(entity);
       } catch (Exception e) {
@@ -81,12 +88,15 @@ class Db {
     }
 
     public <T> List<T> all(Class<T> entityClass, String orderBy) {
+      LOGGER.info("all: " + entityClass.getSimpleName() + " ORDER BY " + orderBy);
       TypedQuery<T> query = em.createQuery("from " + entityClass.getSimpleName() + " order by " + orderBy + " DESC", entityClass);
 
       return query.getResultList();
     }
 
     public <T> List<T> all(Class<T> entityClass, String property, Object value, String orderBy) {
+      LOGGER.info("all: " + entityClass.getSimpleName() + "#" + property + " = " + value + " ORDER BY " + orderBy);
+
       TypedQuery<T> query = em.createQuery("from " + entityClass.getSimpleName() + " where " + property + "= :value order by " + orderBy + " DESC", entityClass);
       query.setParameter("value", value);
 
@@ -94,6 +104,7 @@ class Db {
     }
 
     public <T> List<T> query(Class<T> entityClass, String queryName, Object... parameters) {
+      LOGGER.info("query: " + queryName + " " + Arrays.toString(parameters));
       TypedQuery<T> query = em.createNamedQuery(queryName, entityClass);
       for (int i = 0; i < parameters.length; i++) {
         query.setParameter(i + 1, parameters[i]);

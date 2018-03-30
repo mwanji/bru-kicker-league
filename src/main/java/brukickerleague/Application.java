@@ -1,7 +1,6 @@
 package brukickerleague;
 
 import org.flywaydb.core.Flyway;
-import org.hibernate.cfg.Environment;
 import spark.Spark;
 
 import javax.persistence.EntityManagerFactory;
@@ -59,8 +58,6 @@ public class Application {
     persistenceProperties.put("hibernate.hikari.minimumIdle", "1");
     persistenceProperties.put("hibernate.hikari.maximumPoolSize", "20");
     persistenceProperties.put("hibernate.hikari.idleTimeout", "300000");
-    persistenceProperties.put(Environment.SHOW_SQL, true);
-    persistenceProperties.put(Environment.FORMAT_SQL, true);
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("bruKickerLeague", persistenceProperties);
     return new Db(entityManagerFactory);
   }
