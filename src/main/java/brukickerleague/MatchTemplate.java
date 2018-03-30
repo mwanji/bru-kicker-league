@@ -1,6 +1,7 @@
 package brukickerleague;
 
 import j2html.tags.DomContent;
+import j2html.tags.EmptyTag;
 import lombok.AllArgsConstructor;
 
 import java.time.format.DateTimeFormatter;
@@ -45,14 +46,20 @@ public class MatchTemplate {
       div(attrs(".btn-group.w-100"),
         a(attrs(".btn.btn-dark.w-50"),
           iff(!match.hasEnded(), span(attrs(".badge.badge-danger.mr-3"), "LIVE")),
+          iff(match.didTeam1Crawl(), crawling("-light")),
           text(match.getTeam1FullName()),
           span(attrs(".badge.badge-light.ml-2"), Integer.toString(match.getTeam1Score()))
         ).withHref("/match/" + match.getAltId()),
         a(attrs(".btn.btn-light.w-50"),
+          iff(match.didTeam2Crawl(), crawling("")),
           span(match.getTeam2FullName()),
           span(attrs(".badge.badge-dark.ml-2"), Integer.toString(match.getTeam2Score()))
         ).withHref("/match/" + match.getAltId())
       )
     );
+  }
+
+  private static EmptyTag crawling(String qualifier) {
+    return img(attrs(".mr-3")).withSrc("/crawling" + qualifier + ".svg").withAlt("Crawling").withStyle("height: 1.5em");
   }
 }

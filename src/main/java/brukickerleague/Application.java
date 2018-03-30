@@ -27,6 +27,8 @@ public class Application {
 
     deploymentPort().ifPresent(Spark::port);
 
+    staticFiles.location("web");
+
     initMatchController(validator, db);
     StandingsController standingsController = new StandingsController(db);
     get("/", standingsController::getStandings);

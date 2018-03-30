@@ -101,4 +101,12 @@ class Match {
   public boolean isTeam1Winner() {
     return hasEnded() && team1Score > team2Score;
   }
+
+  public boolean didTeam1Crawl() {
+    return !isTeam1Winner() && team1Score == 0 || (team1Score == 1 && team2Score == 10);
+  }
+
+  public boolean didTeam2Crawl() {
+    return isTeam1Winner() && team2Score == 0 || (team2Score == 1 && team1Score == 10);
+  }
 }
