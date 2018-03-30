@@ -27,4 +27,10 @@ public class PlayerController {
 
     return new PlayerTemplate(name, matches, awards).render();
   }
+
+  public String getAwards(Request req, Response res) {
+    List<Award> awards = db.all(Award.class, "startedAt");
+
+    return new PlayerTemplate(awards).renderAwards();
+  }
 }

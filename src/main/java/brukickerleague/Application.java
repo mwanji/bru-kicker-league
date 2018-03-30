@@ -34,6 +34,7 @@ public class Application {
 
     PlayerController playerController = new PlayerController(db);
     get("/player/:name", playerController::getPlayer);
+    get("/awards", playerController::getAwards);
   }
 
   private static void initMatchController(Validator validator, Db db) {
