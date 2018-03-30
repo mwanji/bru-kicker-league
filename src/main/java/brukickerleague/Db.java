@@ -84,9 +84,8 @@ class Db {
     }
 
     public <T> List<T> all(Class<T> entityClass, String property, Object value, String orderBy) {
-      TypedQuery<T> query = em.createQuery("from " + entityClass.getSimpleName() + " where " + property + "= :value order by :orderBy DESC", entityClass);
+      TypedQuery<T> query = em.createQuery("from " + entityClass.getSimpleName() + " where " + property + "= :value order by " + orderBy + " DESC", entityClass);
       query.setParameter("value", value);
-      query.setParameter("orderBy", orderBy);
 
       return query.getResultList();
     }

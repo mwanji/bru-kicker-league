@@ -17,13 +17,14 @@ public class PlayerController {
   public String getPlayer(Request req, Response res) {
     String name = req.params("name");
     LinkedHashMap<LocalDate, List<Match>> matches = new LinkedHashMap<>();
-    db.inTx(tx -> tx.query(Match.class, "Match.byPlayer", name)).stream()
+    List<Award> awards = db.all(Award.class, "playerName", name, "startedAt");
+    db.inTx(tx -> tx.query(Match.class, "Match.byPlayer", name))
       .forEach(match -> {
         LocalDate localDate = match.getCreatedAt().toLocalDate();
         matches.computeIfAbsent(localDate, (date) -> new ArrayList<>());
         matches.get(localDate).add(match);
       });
 
-    return new PlayerTemplate(name, matches).render();
+    return new PlayerTemplate(name, matches, awards).render();
   }
 }

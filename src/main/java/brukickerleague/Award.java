@@ -36,9 +36,11 @@ public class Award {
   private String playerName;
   @Column(updatable = false)
   @NotNull
+  @Getter
   private LocalDate startedAt;
   @Column(updatable = false)
   @NotNull
+  @Getter
   private LocalDate endedAt;
 
   public Award(@NotNull Award.Type awardType, @NotNull String playerName, @NotNull LocalDate startedAt, @NotNull LocalDate endedAt) {
