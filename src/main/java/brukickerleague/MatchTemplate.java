@@ -25,11 +25,17 @@ public class MatchTemplate {
         div(attrs(".col.text-muted.text-center"), DateTimeFormatter.ISO_LOCAL_DATE.format(match.getCreatedAt()))
       ),
       form(attrs(".form-inline"),
-        label(attrs(".w-75.h3"), match.getTeam1FullName()),
+        label(attrs(".w-75.h3"),
+          iff(match.didTeam1Crawl(), crawling("")),
+          text(match.getTeam1FullName())
+        ),
         button(attrs(".btn.btn-dark.w-25.btn-lg"), team1Score).withType(match.hasEnded() ? "button" : "submit")
       ).withMethod("post").withAction(Urls.goal(match, "1")),
       form(attrs(".form-inline.mt-3"),
-        label(attrs(".w-75.h3"), match.getTeam2FullName()),
+        label(attrs(".w-75.h3"),
+          iff(match.didTeam2Crawl(), crawling("")),
+          text(match.getTeam2FullName())
+        ),
         button(attrs(".btn.btn-light.w-25.btn-lg"), team2Score).withType(match.hasEnded() ? "button" : "submit")
       ).withMethod("post").withAction(Urls.goal(match, "2")),
       iff(!match.hasEnded(),
