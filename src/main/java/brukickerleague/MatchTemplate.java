@@ -54,11 +54,13 @@ public class MatchTemplate {
         a(attrs(".btn.btn-dark.w-50"),
           iff(!match.hasEnded(), span(attrs(".badge.badge-danger.mr-3"), "LIVE")),
           iff(match.didTeam1Crawl(), crawling("-light")),
+          iff(match.isTeam1Winner(), Bootstrap.icon("badge.mr-2")),
           text(match.getTeam1FullName()),
           span(attrs(".badge.badge-light.ml-2"), Integer.toString(match.getTeam1Score()))
         ).withHref(url),
         a(attrs(".btn.btn-light.w-50"),
           iff(match.didTeam2Crawl(), crawling("")),
+          iff(match.isTeam2Winner(), Bootstrap.icon("badge.mr-2")),
           span(match.getTeam2FullName()),
           span(attrs(".badge.badge-dark.ml-2"), Integer.toString(match.getTeam2Score()))
         ).withHref(url)

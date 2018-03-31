@@ -102,6 +102,10 @@ class Match {
     return hasEnded() && team1Score > team2Score;
   }
 
+  public boolean isTeam2Winner() {
+    return hasEnded() && team2Score > team1Score;
+  }
+
   public boolean didTeam1Crawl() {
     return hasEnded() && !isTeam1Winner() && (team1Score == 0 || (team1Score == 1 && team2Score == 10));
   }
