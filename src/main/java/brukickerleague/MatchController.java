@@ -43,16 +43,13 @@ public class MatchController {
   }
 
   public Object addGoal(Request req, Response res) {
-    Match match = db.inTx(tx -> {
-      Match _match = tx.by(Match.class, "id", req.params("id"))
-        .orElseThrow(() -> new IllegalArgumentException("No match found"));
-      _match.addGoal(req.params("teamId"));
-      tx.save(_match);
-      return _match;
-    });
-
-    res.redirect(Urls.match(match));
-    return null;
+    return db.inTx(tx -> tx.by(Match.class, "id", req.params("id"))
+      .map(m -> {
+        m.addGoal(req.params("teamId"));
+        res.redirect(Urls.match(m));
+        return tx.save(m);
+      })
+      .orElseThrow(() -> new IllegalArgumentException("No match found")));
   }
 
   public Object endMatch(Request req, Response res) {
