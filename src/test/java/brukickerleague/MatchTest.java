@@ -92,4 +92,29 @@ class MatchTest {
     assertFalse(match.didTeam2Crawl());
     assertTrue(match.didTeam1Crawl());
   }
+
+  @Test
+  public void should_not_crawl_while_match_is_live() {
+    Match match = new Match("t1p1", null, "t2p1", null);
+
+    assertFalse(match.didTeam1Crawl());
+    assertFalse(match.didTeam2Crawl());
+
+    match.addGoal("2");
+    assertFalse(match.didTeam1Crawl());
+
+    match.addGoal("2");
+    match.addGoal("2");
+    match.addGoal("2");
+    match.addGoal("2");
+    match.addGoal("2");
+    match.addGoal("2");
+    assertFalse(match.didTeam1Crawl());
+
+    match.addGoal("1");
+    match.addGoal("2");
+    match.addGoal("2");
+    match.addGoal("2");
+    assertFalse(match.didTeam1Crawl());
+  }
 }
