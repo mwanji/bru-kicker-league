@@ -30,7 +30,7 @@ public class Page {
             a(attrs(".navbar-brand.pl-3"), "Bru Kicker League").withHref("/"),
             div(attrs(".collapse.navbar-collapse"),
               div(attrs(".navbar-nav"),
-                a(attrs("btn.btn-outline-light.mr-1"), icon("plus"), span(attrs(".d-none.d-md-inline"), " Start Match")).withHref("/match/"),
+                a(attrs("btn.btn-outline-light.mr-1"), icon("plus"), span(attrs(".d-none.d-md-inline"), " Start Match")).withHref(Urls.match()),
                 a(attrs("btn.btn-outline-light"), icon("star"), span(attrs(".d-none.d-md-inline"), " Awards")).withHref("/awards")
               )
             )

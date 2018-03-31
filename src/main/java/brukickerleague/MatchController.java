@@ -18,7 +18,7 @@ public class MatchController {
   private final Db db;
 
   public String showMatch(Request req, Response res) {
-    return db.by(Match.class, "altId", req.params("altId"))
+    return db.by(Match.class, "id", req.params("id"))
       .map(match -> new MatchTemplate(match).render())
       .orElseThrow(() -> new IllegalArgumentException("Match not found"));
   }
@@ -33,8 +33,8 @@ public class MatchController {
     Set<ConstraintViolation<Match>> constraintViolations = validator.validate(match);
 
     if (constraintViolations.isEmpty()) {
-      db.save(match);
-      res.redirect("/match/" + match.getAltId());
+      match = db.save(match);
+      res.redirect(Urls.match(match));
       return null;
     } else {
       Map<String, String> errors = constraintViolations.stream().collect(toMap(cv -> cv.getPropertyPath().toString(), ConstraintViolation::getMessage));
@@ -43,28 +43,28 @@ public class MatchController {
   }
 
   public Object addGoal(Request req, Response res) {
-    Match match1 = db.inTx(tx -> {
-      Match match = tx.by(Match.class, "altId", req.params("altId"))
+    Match match = db.inTx(tx -> {
+      Match _match = tx.by(Match.class, "id", req.params("id"))
         .orElseThrow(() -> new IllegalArgumentException("No match found"));
-      match.addGoal(req.params("teamId"));
-      tx.save(match);
-      return match;
+      _match.addGoal(req.params("teamId"));
+      tx.save(_match);
+      return _match;
     });
 
-    res.redirect("/match/" + match1.getAltId());
+    res.redirect(Urls.match(match));
     return null;
   }
 
   public Object endMatch(Request req, Response res) {
     Match match1 = db.inTx(tx -> {
-      Match match = tx.by(Match.class, "altId", req.params("altId"))
+      Match match = tx.by(Match.class, "id", req.params("id"))
         .orElseThrow(() -> new IllegalArgumentException("No match found"));
       match.end();
       tx.save(match);
       return match;
     });
 
-    res.redirect("/match/" + match1.getAltId());
+    res.redirect(Urls.match(match1));
     return null;
   }
 

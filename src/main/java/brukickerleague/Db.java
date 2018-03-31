@@ -68,6 +68,10 @@ class Db {
     @SuppressWarnings("unchecked")
     public <T> Optional<T> by(Class<T> entityClass, String property, Object value) {
       LOGGER.info("by: " + entityClass.getSimpleName() + "#" + property + " = " + value);
+      if ("id".equals(property) && value instanceof String) {
+        value = Long.parseLong((String) value);
+      }
+
       Query query = em.createQuery("from " + entityClass.getSimpleName() + " where " + property + "= :value");
       query.setParameter("value", value);
       try {

@@ -40,12 +40,12 @@ public class Application {
 
   private static void initMatchController(Validator validator, Db db) {
     MatchController matchController = new MatchController(validator, db);
-    path("/match", () -> {
-      get("/", matchController::createMatchForm);
-      post("/", matchController::createMatch);
-      get("/:altId", matchController::showMatch);
-      post("/:altId/goal/:teamId", matchController::addGoal);
-      post("/:altId/end", matchController::endMatch);
+    path(Urls.match(), () -> {
+      get("", matchController::createMatchForm);
+      post("", matchController::createMatch);
+      get("/:id", matchController::showMatch);
+      post("/:id/goal/:teamId", matchController::addGoal);
+      post("/:id/end", matchController::endMatch);
     });
   }
 
