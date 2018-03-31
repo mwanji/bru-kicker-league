@@ -36,7 +36,13 @@ public class Page {
             )
           )
         ),
-        div(attrs(".container"), contents)
+        div(attrs(".container"), contents),
+        footer(attrs(".mt-5.text-muted.text-center"),
+          p("Created by Moandji Ezana for Bru"),
+          p(
+            a("crawl").withHref("https://thenounproject.com/term/crawl/485414"), text(" by Marco Fleseri from the Noun Project")
+          )
+        )
       )
     ));
   }
