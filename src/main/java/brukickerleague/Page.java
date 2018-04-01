@@ -40,7 +40,9 @@ public class Page {
         footer(attrs(".mt-5.text-muted.text-center"),
           p("Created by Moandji Ezana for Bru"),
           p(
-            a("crawl").withHref("https://thenounproject.com/term/crawl/485414"), text(" by Marco Fleseri from the Noun Project")
+            a("crawl").withHref("https://thenounproject.com/term/crawl/485414"), text(" by Marco Fleseri from the Noun Project"),
+            br(),
+            a("helmet").withHref("https://thenounproject.com/term/helmet/1090140/"), text(" by art shop from the Noun Project")
           )
         )
       )

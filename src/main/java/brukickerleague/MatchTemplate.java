@@ -1,5 +1,6 @@
 package brukickerleague;
 
+import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
 import j2html.tags.EmptyTag;
 import lombok.AllArgsConstructor;
@@ -54,21 +55,37 @@ public class MatchTemplate {
         a(attrs(".btn.btn-dark.w-50"),
           iff(!match.hasEnded(), span(attrs(".badge.badge-danger.mr-3"), "LIVE")),
           iff(match.didTeam1Crawl(), crawling("-light")),
-          iff(match.isTeam1Winner(), Bootstrap.icon("badge.mr-2")),
+          iff(match.isTeam1Winner(), iffElse(useHelmet(match.getTeam1FullName()), helmet("-light"), victoryIcon())),
           text(match.getTeam1FullName()),
           span(attrs(".badge.badge-light.ml-2"), Integer.toString(match.getTeam1Score()))
         ).withHref(url),
         a(attrs(".btn.btn-light.w-50"),
           iff(match.didTeam2Crawl(), crawling("")),
-          iff(match.isTeam2Winner(), Bootstrap.icon("badge.mr-2")),
-          span(match.getTeam2FullName()),
+          iff(match.isTeam2Winner(), iffElse(useHelmet(match.getTeam2FullName()), helmet(""), victoryIcon())),
+          text(match.getTeam2FullName()),
           span(attrs(".badge.badge-dark.ml-2"), Integer.toString(match.getTeam2Score()))
         ).withHref(url)
       )
     );
   }
 
+  private static ContainerTag victoryIcon() {
+    return Bootstrap.icon("badge.mr-2");
+  }
+
   private static EmptyTag crawling(String qualifier) {
-    return img(attrs(".mr-3")).withSrc("/crawling" + qualifier + ".svg").withAlt("Crawling").withStyle("height: 1.5em");
+    return svg("/crawling" + qualifier + ".svg", "Crawling");
+  }
+
+  private static EmptyTag helmet(String qualifier) {
+    return svg("/helmet" + qualifier + ".svg", "Helmet");
+  }
+
+  private static EmptyTag svg(String src, String title) {
+    return img(attrs(".mr-3")).withSrc(src).withAlt(title).withTitle(title).withStyle("height: 1.5em");
+  }
+
+  private static boolean useHelmet(String teamFullName) {
+    return teamFullName.contains("Kathleen");
   }
 }
