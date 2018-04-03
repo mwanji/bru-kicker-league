@@ -2,7 +2,6 @@ package brukickerleague;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -52,18 +51,16 @@ class Match {
   private String team2Player1;
   @Length(max = 50)
   private String team2Player2;
-  @Setter
   @Min(0)
   private int team1Score;
-  @Setter
   @Min(0)
   private int team2Score;
 
   Match(String team1Player1, String team1Player2, String team2Player1, String team2Player2) {
-    this.team1Player1 = team1Player1;
-    this.team1Player2 = team1Player2;
-    this.team2Player1 = team2Player1;
-    this.team2Player2 = team2Player2;
+    this.team1Player1 = team1Player1 != null ? team1Player1.trim() : null;
+    this.team1Player2 = team1Player2 != null ? team1Player2.trim() : null;
+    this.team2Player1 = team2Player1 != null ? team2Player1.trim() : null;
+    this.team2Player2 = team2Player2 != null ? team2Player2.trim() : null;
   }
 
   public void addGoal(String teamId) {
