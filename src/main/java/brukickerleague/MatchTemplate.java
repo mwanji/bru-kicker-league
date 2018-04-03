@@ -55,13 +55,13 @@ public class MatchTemplate {
         a(attrs(".btn.btn-dark.w-50"),
           iff(!match.hasEnded(), span(attrs(".badge.badge-danger.mr-3"), "LIVE")),
           iff(match.didTeam1Crawl(), crawling("-light")),
-          iff(match.isTeam1Winner(), iffElse(useHelmet(match.getTeam1FullName()), helmet("-light"), victoryIcon())),
+          iff(match.isTeam1Winner(), winnerIcon(match.getTeam1FullName(), "-light")),
           text(match.getTeam1FullName()),
           span(attrs(".badge.badge-light.ml-2"), Integer.toString(match.getTeam1Score()))
         ).withHref(url),
         a(attrs(".btn.btn-light.w-50"),
           iff(match.didTeam2Crawl(), crawling("")),
-          iff(match.isTeam2Winner(), iffElse(useHelmet(match.getTeam2FullName()), helmet(""), victoryIcon())),
+          iff(match.isTeam2Winner(), winnerIcon(match.getTeam2FullName(), "")),
           text(match.getTeam2FullName()),
           span(attrs(".badge.badge-dark.ml-2"), Integer.toString(match.getTeam2Score()))
         ).withHref(url)
@@ -69,7 +69,18 @@ public class MatchTemplate {
     );
   }
 
-  private static ContainerTag victoryIcon() {
+  private static DomContent winnerIcon(String teamFullName, String qualifier) {
+    if (teamFullName.contains("Kathleen")) {
+      return helmet(qualifier);
+    }
+    if (teamFullName.contains("Glenn")) {
+      return bobaFett(qualifier);
+    }
+
+    return victoryBadge();
+  }
+
+  private static ContainerTag victoryBadge() {
     return Bootstrap.icon("badge.mr-2");
   }
 
@@ -79,6 +90,10 @@ public class MatchTemplate {
 
   private static EmptyTag helmet(String qualifier) {
     return svg("/helmet" + qualifier + ".svg", "Helmet");
+  }
+
+  private static EmptyTag bobaFett(String qualifier) {
+    return svg("/boba-fett" + qualifier + ".svg", "Helmet");
   }
 
   private static EmptyTag svg(String src, String title) {

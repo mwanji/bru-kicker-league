@@ -42,7 +42,9 @@ public class Page {
           p(
             a("crawl").withHref("https://thenounproject.com/term/crawl/485414"), text(" by Marco Fleseri from the Noun Project"),
             br(),
-            a("helmet").withHref("https://thenounproject.com/term/helmet/1090140/"), text(" by art shop from the Noun Project")
+            a("helmet").withHref("https://thenounproject.com/term/helmet/1090140/"), text(" by art shop from the Noun Project"),
+            br(),
+            a("Boba Fett").withHref("https://thenounproject.com/term/boba-fett/447749"), text(" by Ben Davis from the Noun Project")
           )
         )
       )
