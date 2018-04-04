@@ -30,14 +30,18 @@ public class MatchTemplate {
       form(attrs(".form-inline"),
         label(attrs(".w-75.h3"),
           iff(match.didTeam1Crawl(), crawling("")),
-          text(match.getTeam1FullName())
+          iff(match.isTeam1Winner(), winnerIcon(match.getTeam1Player1(), "")),
+          span(attrs(".mr-2"), match.getTeam1FullName()),
+          iff(match.isTeam1Winner() && match.team1HasPlayer2(), winnerIcon(match.getTeam1Player2(), ""))
         ),
         button(attrs(".btn.btn-dark.w-25.btn-lg"), team1Score).withType(match.hasEnded() ? "button" : "submit")
       ).withMethod("post").withAction(Urls.goal(match, "1")),
       form(attrs(".form-inline.mt-3"),
         label(attrs(".w-75.h3"),
           iff(match.didTeam2Crawl(), crawling("")),
-          text(match.getTeam2FullName())
+          iff(match.isTeam2Winner(), winnerIcon(match.getTeam2Player1(), "")),
+          span(attrs(".mr-2"), match.getTeam2FullName()),
+          iff(match.isTeam2Winner() && match.team2HasPlayer2(), winnerIcon(match.getTeam2Player2(), ""))
         ),
         button(attrs(".btn.btn-light.w-25.btn-lg"), team2Score).withType(match.hasEnded() ? "button" : "submit")
       ).withMethod("post").withAction(Urls.goal(match, "2")),
@@ -57,13 +61,13 @@ public class MatchTemplate {
         a(attrs(".btn.btn-dark.w-50"),
           iff(!match.hasEnded(), span(attrs(".badge.badge-danger.mr-3"), "LIVE")),
           iff(match.didTeam1Crawl(), crawling("-light")),
-          iff(match.isTeam1Winner(), winnerIcon(match.getTeam1FullName(), "-light")),
+          iff(match.isTeam1Winner(), winnerIcon(match.getTeam1FullName(), "-light", true)),
           text(match.getTeam1FullName()),
           span(attrs(".badge.badge-light.ml-2"), Integer.toString(match.getTeam1Score()))
         ).withHref(url),
         a(attrs(".btn.btn-light.w-50"),
           iff(match.didTeam2Crawl(), crawling("")),
-          iff(match.isTeam2Winner(), winnerIcon(match.getTeam2FullName(), "")),
+          iff(match.isTeam2Winner(), winnerIcon(match.getTeam2FullName(), "", true)),
           text(match.getTeam2FullName()),
           span(attrs(".badge.badge-dark.ml-2"), Integer.toString(match.getTeam2Score()))
         ).withHref(url)
@@ -72,6 +76,10 @@ public class MatchTemplate {
   }
 
   private static DomContent winnerIcon(String teamFullName, String qualifier) {
+    return winnerIcon(teamFullName, qualifier, false);
+  }
+
+  private static DomContent winnerIcon(String teamFullName, String qualifier, boolean useDefault) {
     List<DomContent> icons = new ArrayList<>();
     if (teamFullName.contains("Kathleen")) {
       icons.add(helmet(qualifier));
@@ -85,7 +93,7 @@ public class MatchTemplate {
     if (teamFullName.contains("Jan")) {
       icons.add(rockNRoll(qualifier));
     }
-    if (icons.isEmpty()) {
+    if (icons.isEmpty() && useDefault) {
       icons.add(victoryBadge());
     }
 
