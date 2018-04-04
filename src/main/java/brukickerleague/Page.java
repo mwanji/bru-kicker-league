@@ -44,7 +44,9 @@ public class Page {
             br(),
             a("helmet").withHref("https://thenounproject.com/term/helmet/1090140/"), text(" by art shop from the Noun Project"),
             br(),
-            a("Boba Fett").withHref("https://thenounproject.com/term/boba-fett/447749"), text(" by Ben Davis from the Noun Project")
+            a("sword").withHref("https://thenounproject.com/term/sword/25239"), text(" by Geoffrey Joe from the Noun Project"),
+            br(),
+            a("Rock n Roll").withHref("https://thenounproject.com/term/rock-n-roll/136385"), text(" by julian roman from the Noun Project")
           )
         )
       )

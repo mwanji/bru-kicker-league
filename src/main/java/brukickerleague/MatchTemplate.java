@@ -6,6 +6,8 @@ import j2html.tags.EmptyTag;
 import lombok.AllArgsConstructor;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static j2html.TagCreator.*;
 
@@ -70,18 +72,28 @@ public class MatchTemplate {
   }
 
   private static DomContent winnerIcon(String teamFullName, String qualifier) {
+    List<DomContent> icons = new ArrayList<>();
     if (teamFullName.contains("Kathleen")) {
-      return helmet(qualifier);
+      icons.add(helmet(qualifier));
     }
     if (teamFullName.contains("Glenn")) {
-      return bobaFett(qualifier);
+      icons.add(bobaFett(qualifier));
+    }
+    if (teamFullName.contains("Michael")) {
+      icons.add(sword(qualifier));
+    }
+    if (teamFullName.contains("Jan")) {
+      icons.add(rockNRoll(qualifier));
+    }
+    if (icons.isEmpty()) {
+      icons.add(victoryBadge());
     }
 
-    return victoryBadge();
+    return span(attrs(".mr-1"), icons.toArray(new DomContent[0]));
   }
 
   private static ContainerTag victoryBadge() {
-    return Bootstrap.icon("badge.mr-2");
+    return Bootstrap.icon("badge");
   }
 
   private static EmptyTag crawling(String qualifier) {
@@ -89,18 +101,22 @@ public class MatchTemplate {
   }
 
   private static EmptyTag helmet(String qualifier) {
-    return svg("/helmet" + qualifier + ".svg", "Helmet");
+    return svg("/helmet" + qualifier + ".svg", "Kathleen");
   }
 
   private static EmptyTag bobaFett(String qualifier) {
-    return svg("/boba-fett" + qualifier + ".svg", "Helmet");
+    return svg("/boba-fett" + qualifier + ".svg", "Glenn");
+  }
+
+  private static EmptyTag sword(String qualifier) {
+    return svg("/sword" + qualifier + ".svg", "Michael");
+  }
+
+  private static EmptyTag rockNRoll(String qualifier) {
+    return svg("/rock-n-roll" + qualifier + ".svg", "Jan");
   }
 
   private static EmptyTag svg(String src, String title) {
-    return img(attrs(".mr-3")).withSrc(src).withAlt(title).withTitle(title).withStyle("height: 1.5em");
-  }
-
-  private static boolean useHelmet(String teamFullName) {
-    return teamFullName.contains("Kathleen");
+    return img().withSrc(src).withAlt(title).withTitle(title).withStyle("height: 1.5em");
   }
 }
