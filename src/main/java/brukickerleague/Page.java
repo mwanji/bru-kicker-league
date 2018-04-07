@@ -46,7 +46,11 @@ public class Page {
             br(),
             a("sword").withHref("https://thenounproject.com/term/sword/25239"), text(" by Geoffrey Joe from the Noun Project"),
             br(),
-            a("Rock n Roll").withHref("https://thenounproject.com/term/rock-n-roll/136385"), text(" by julian roman from the Noun Project")
+            a("Rock n Roll").withHref("https://thenounproject.com/term/rock-n-roll/136385"), text(" by julian roman from the Noun Project"),
+            br(),
+            a("Ghost").withHref("https://thenounproject.com/term/ghost/799212/"), text(" by ProSymbols from the Noun Project"),
+            br(),
+            a("Boba Fett").withHref("https://thenounproject.com/term/boba-fett/447749/"), text(" by Ben Davis from the Noun Project")
           )
         )
       )

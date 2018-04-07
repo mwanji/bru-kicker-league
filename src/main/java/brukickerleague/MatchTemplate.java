@@ -93,6 +93,9 @@ public class MatchTemplate {
     if (teamFullName.contains("Jan")) {
       icons.add(rockNRoll(qualifier));
     }
+    if (teamFullName.contains("Moandji")) {
+      icons.add(ghost(qualifier));
+    }
     if (icons.isEmpty() && useDefault) {
       icons.add(victoryBadge());
     }
@@ -122,6 +125,10 @@ public class MatchTemplate {
 
   private static EmptyTag rockNRoll(String qualifier) {
     return svg("/rock-n-roll" + qualifier + ".svg", "Jan");
+  }
+
+  private static EmptyTag ghost(String qualifier) {
+    return svg("/ghost" + qualifier + ".svg", "Moandji");
   }
 
   private static EmptyTag svg(String src, String title) {
