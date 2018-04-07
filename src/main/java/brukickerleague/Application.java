@@ -37,6 +37,11 @@ public class Application {
     PlayerController playerController = new PlayerController(db);
     get("/player/:name", playerController::getPlayer);
     get("/awards", playerController::getAwards);
+
+    exception(IllegalArgumentException.class, (ex, req, res) -> {
+      res.status(404);
+      res.body(ex.getMessage());
+    });
   }
 
   private static void initMatchController(Validator validator, Db db) {
