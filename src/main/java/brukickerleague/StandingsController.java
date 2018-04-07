@@ -9,7 +9,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.WeekFields;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static java.time.DayOfWeek.*;
 import static java.time.temporal.TemporalAdjusters.*;
@@ -81,21 +84,10 @@ public class StandingsController {
       })
       .collect(toList());
 
-    Map<String, Integer> playerRatingsOverallSorted = sortRatingsByTotal(playerRatingsOverall);
-
-    return new EloTemplate().renderElo(eloRatings);
+    return new EloTemplate().renderElo(eloRatings, EloTemplate.OrderBy.fromUrl(req.queryParamOrDefault("orderBy", "")));
   }
 
-  private Map<String, Integer> sortRatingsByTotal(Map<String, Integer> overallPlayerRatings) {
-    List<Map.Entry<String, Integer>> list = new ArrayList<>(overallPlayerRatings.entrySet());
-    list.sort(Map.Entry.comparingByValue());
-    Collections.reverse(list);
-    Map<String, Integer> overallPlayerRatingsSorted = new LinkedHashMap<>();
-    list.forEach(item -> overallPlayerRatingsSorted.put(item.getKey(), item.getValue()));
-    return overallPlayerRatingsSorted;
-  }
-
-  private Map<String, Integer> setPlayerRatings(List<Match> matches, Map<String, Integer> playerRatings) {
+  private void setPlayerRatings(List<Match> matches, Map<String, Integer> playerRatings) {
     matches.forEach(match -> {
       String team1Player1 = match.getTeam1Player1();
       defaultRating(team1Player1, playerRatings);
@@ -118,7 +110,6 @@ public class StandingsController {
       }
       playerIncrements.forEach((player, increment) -> playerRatings.compute(player, (p, i) -> i + increment));
     });
-    return playerRatings;
   }
 
   private void updateRatings(String player, boolean winner, String opponent, Map<String, Integer> playerRatings, Map<String, Integer> playerIncrements) {
