@@ -62,6 +62,6 @@ public class StandingsTemplate {
     Boolean hasAward = award.map(a -> a.getPlayerName().equals(name)).orElse(Boolean.FALSE);
     return a(
       iffElse(hasAward && showAward, join(icon("star.text-warning").withTitle("Player of the Week"), " " + name), text(name))
-    ).withHref("/player/" + name);
+    ).withHref(Urls.player(name));
   }
 }
