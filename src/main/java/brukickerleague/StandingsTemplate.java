@@ -14,6 +14,7 @@ public class StandingsTemplate {
 
   private final List<Match> liveMatches;
   private final Optional<Award> award;
+  private final Optional<Award> awardLastWeek;
   private final Standings standings;
   private final Standings standingsLastWeek;
 
@@ -32,7 +33,7 @@ public class StandingsTemplate {
         ),
         each(standings.list(), standing ->
           tr(
-            td(playerLink(standing.getName(), true)),
+            td(playerLink(standing.getName(), award)),
             td(Integer.toString(standing.getWins())),
             td(Integer.toString(standing.getLosses()))
           )
@@ -49,7 +50,7 @@ public class StandingsTemplate {
         ),
         each(standingsLastWeek.list(), standing ->
           tr(
-            td(playerLink(standing.getName(), false)),
+            td(playerLink(standing.getName(), awardLastWeek)),
             td(Integer.toString(standing.getWins())),
             td(Integer.toString(standing.getLosses()))
           )
@@ -58,10 +59,10 @@ public class StandingsTemplate {
     ).render();
   }
 
-  private DomContent playerLink(String name, boolean showAward) {
+  private DomContent playerLink(String name, Optional<Award> award) {
     Boolean hasAward = award.map(a -> a.getPlayerName().equals(name)).orElse(Boolean.FALSE);
     return a(
-      iffElse(hasAward && showAward, join(icon("star.text-warning").withTitle("Player of the Week"), " " + name), text(name))
+      iffElse(hasAward, join(icon("star.text-warning").withTitle("Player of the Week"), " " + name), text(name))
     ).withHref(Urls.player(name));
   }
 }

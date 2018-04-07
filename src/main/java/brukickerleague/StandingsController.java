@@ -44,8 +44,9 @@ public class StandingsController {
     } else {
       award = awards.get(0);
     }
+    Optional<Award> awardPreviousWeek = db.query(Award.class, "Award.typeForPeriod", Award.Type.PLAYER_OF_THE_WEEK, startOfAwardWeek.with(previous(MONDAY))).stream().findAny();
 
-    return new StandingsTemplate(liveMatches, Optional.ofNullable(award), thisWeekStandings, lastWeekStandings).render();
+    return new StandingsTemplate(liveMatches, Optional.ofNullable(award), awardPreviousWeek, thisWeekStandings, lastWeekStandings).render();
   }
 
   public String getEloRatings(Request req, Response res) {
