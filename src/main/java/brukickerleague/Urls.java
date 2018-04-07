@@ -18,6 +18,10 @@ public class Urls {
     return match(match) + "/end";
   }
 
+  public static String player(String name) {
+    return "/player/" + name;
+  }
+
   private Urls() {
   }
 }
