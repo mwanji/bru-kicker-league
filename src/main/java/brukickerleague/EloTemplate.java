@@ -73,7 +73,7 @@ public class EloTemplate {
             icon("arrow-bottom"),
             text(Integer.toString(Math.abs(rating)))
           ),
-          td("0")
+          td(attrs(".text-secondary"), "0")
         )
       ),
       td()
