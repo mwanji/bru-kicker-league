@@ -87,7 +87,7 @@ public class MatchTemplate {
     if (teamFullName.contains("Glenn")) {
       icons.add(bobaFett(qualifier));
     }
-    if (teamFullName.contains("Michael")) {
+    if (teamFullName.contains("Michaël")) {
       icons.add(sword(qualifier));
     }
     if (teamFullName.contains("Jan")) {
