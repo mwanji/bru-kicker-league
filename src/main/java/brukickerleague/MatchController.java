@@ -6,9 +6,14 @@ import spark.Response;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static java.time.DayOfWeek.*;
+import static java.time.temporal.TemporalAdjusters.*;
 import static java.util.stream.Collectors.*;
 
 @AllArgsConstructor
@@ -21,6 +26,15 @@ public class MatchController {
     return db.by(Match.class, "id", req.params("id"))
       .map(match -> new MatchTemplate(match).render())
       .orElseThrow(() -> new IllegalArgumentException("Match not found"));
+  }
+
+  public String showMatches(Request req, Response res) {
+    List<Match> matches = db.query(Match.class, "Match.betweenDates", ZonedDateTime.now().with(previous(MONDAY)).with(LocalTime.MIN).minusDays(7), ZonedDateTime.now());
+    Map<LocalDate, List<Match>> matchesByDay = new HashMap<>();
+
+    matches.forEach(match -> matchesByDay.computeIfAbsent(match.getCreatedAt().toLocalDate(), date -> new ArrayList<>()).add(match));
+
+    return new MatchTemplate(matchesByDay).renderMatches();
   }
 
   public String createMatchForm(Request req, Response res) {

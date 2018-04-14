@@ -3,18 +3,30 @@ package brukickerleague;
 import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
 import j2html.tags.EmptyTag;
-import lombok.AllArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static j2html.TagCreator.*;
 
-@AllArgsConstructor
 public class MatchTemplate {
 
   private final Match match;
+  private final Map<LocalDate, List<Match>> matchesByDate;
+
+  public MatchTemplate(Match match) {
+    this.match = match;
+    this.matchesByDate = Collections.emptyMap();
+  }
+
+  public MatchTemplate(Map<LocalDate, List<Match>> matchesByDate) {
+    this.matchesByDate = matchesByDate;
+    this.match = null;
+  }
 
   public String render() {
     String team1Score = Integer.toString(match.getTeam1Score());
@@ -50,6 +62,15 @@ public class MatchTemplate {
           button(attrs(".btn.btn-secondary.w-100.btn-lg"), "End Match")
         ).withMethod("post").withAction(Urls.end(match))
       )
+    ).render();
+  }
+
+  public String renderMatches() {
+    return new Page("Matches",
+      each(matchesByDate.keySet(), day -> join(
+        h1(attrs(".display-3.mb-4"), day.isEqual(LocalDate.now()) ? "Today" : (day.isEqual(LocalDate.now().minusDays(1)) ? "Yesterday" : PlayerTemplate.DATE_FORMATTER.format(day))),
+        each(matchesByDate.get(day), MatchTemplate::singleMatch)
+      ))
     ).render();
   }
 

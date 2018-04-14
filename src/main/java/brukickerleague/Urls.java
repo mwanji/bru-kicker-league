@@ -24,4 +24,12 @@ public class Urls {
 
   private Urls() {
   }
+
+  public static String awards() {
+    return "/awards";
+  }
+
+  public static String matches() {
+    return "/matches";
+  }
 }

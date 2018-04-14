@@ -13,7 +13,7 @@ import static j2html.TagCreator.*;
 @AllArgsConstructor
 public class PlayerTemplate {
 
-  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+  public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
   private final String name;
   private final Map<LocalDate, List<Match>> matches;

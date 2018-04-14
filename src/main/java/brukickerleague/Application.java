@@ -35,8 +35,8 @@ public class Application {
     get("elo", standingsController::getEloRatings);
 
     PlayerController playerController = new PlayerController(db);
-    get("/player/:name", playerController::getPlayer);
-    get("/awards", playerController::getAwards);
+    get(Urls.player(":name"), playerController::getPlayer);
+    get(Urls.awards(), playerController::getAwards);
 
     exception(IllegalArgumentException.class, (ex, req, res) -> {
       res.status(404);
@@ -53,6 +53,7 @@ public class Application {
       post("/:id/goal/:teamId", matchController::addGoal);
       post("/:id/end", matchController::endMatch);
     });
+    get(Urls.matches(), matchController::showMatches);
   }
 
   private static Db initDb() {

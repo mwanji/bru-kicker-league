@@ -31,7 +31,8 @@ public class Page {
             div(attrs(".collapse.navbar-collapse"),
               div(attrs(".navbar-nav"),
                 a(attrs("btn.btn-outline-light.mr-1"), icon("plus"), span(attrs(".d-none.d-md-inline"), " Start Match")).withHref(Urls.match()),
-                a(attrs("btn.btn-outline-light"), icon("star"), span(attrs(".d-none.d-md-inline"), " Awards")).withHref("/awards")
+                a(attrs("btn.btn-outline-light.mr-1"), icon("star"), span(attrs(".d-none.d-md-inline"), " Awards")).withHref(Urls.awards()),
+                a(attrs("btn.btn-outline-light"), icon("list"), span(attrs(".d-none.d-md-inline"), " Matches")).withHref(Urls.matches())
               )
             )
           )
