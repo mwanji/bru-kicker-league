@@ -30,7 +30,8 @@ public class MatchController {
 
   public String showMatches(Request req, Response res) {
     List<Match> matches = db.query(Match.class, "Match.betweenDates", ZonedDateTime.now().with(previous(MONDAY)).with(LocalTime.MIN).minusDays(7), ZonedDateTime.now());
-    Map<LocalDate, List<Match>> matchesByDay = new HashMap<>();
+    Comparator<LocalDate> comparing = Comparator.comparing(d -> d);
+    Map<LocalDate, List<Match>> matchesByDay = new TreeMap<>(comparing.reversed());
 
     matches.forEach(match -> matchesByDay.computeIfAbsent(match.getCreatedAt().toLocalDate(), date -> new ArrayList<>()).add(match));
 
